@@ -1,7 +1,7 @@
 DOCKER ?= sudo docker
 REV := $(shell cat VERSION)
 BUILD_FLAGS ?=
-PROJECT ?= nodejs
+PROJECT ?= hubot
 REGISTRY ?= dr.prod.modcloth.com
 COMMAND ?=
 
