@@ -1,10 +1,12 @@
 ModCloth Docker Layers
 ======================
 
-This is a collection of layers meant to be published to ModCloth's Docker Registry.  Nothing in here should be
-anything like an "application container", but instead just foundational layers.  Because of this layered
-relationship, the directories in this repository are nested accordingly.  In order to get an idea of the hierarchy,
-perhaps use a tool like `tree` (which is `brew`-installable) like so:
+This is a collection of layers meant to be published to ModCloth's Docker
+Registry.  Nothing in here should be anything like an "application container",
+but instead just foundational layers.  Because of this layered relationship, the
+directories in this repository are nested accordingly.  In order to get an idea
+of the hierarchy, perhaps use a tool like `tree` (which is `brew`-installable)
+like so:
 
 ``` bash
 tree -C
@@ -12,9 +14,9 @@ tree -C
 
 ## Initial Vagrant setup
 
-This repository contains a `Vagrantfile` at the top level which is meant to be used to create a Linux VM
-environment in which `docker` can be used.  [Install vagrant here](http://downloads.vagrantup.com/tags/v1.3.3),
-then do this:
+This repository contains a `Vagrantfile` at the top level which is meant to be
+used to create a Linux VM environment in which `docker` can be used.  [Install
+vagrant here](http://downloads.vagrantup.com/tags/v1.3.3), then do this:
 
 ``` bash
 vagrant up
@@ -23,7 +25,8 @@ vagrant up
 If anything explodes, you should [yell at someone](mailto:d.buch@modcloth.com).
 
 ## Building images
-Each directory contains a `Makefile` (based on `/.tmp/Makefile`) which may be used to build images from the
+Each directory contains a `Makefile` (based on
+[/.tmpl/Makefile](.tmpl/Makefile)) which may be used to build images from the
 `Dockerfile`s found throughout:
 
 ``` bash
@@ -36,8 +39,9 @@ make container
 
 ## Pushing images
 
-Once the images are built, they should be uploaded to the ModCloth Docker Registry at `dr.prod.modcloth.com` using
-`docker push` (after `docker login`) like so:
+Once the images are built, they should be uploaded to the ModCloth Docker
+Registry at `dr.prod.modcloth.com` using `docker push` (after `docker login`)
+like so:
 
 ``` bash
 # Make sure you're logged into the ModCloth Docker Registry
