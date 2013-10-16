@@ -7,12 +7,5 @@ Vagrant.configure('2') do |config|
 
   config.vm.network :private_network, ip: '33.33.33.10', auto_correct: true
 
-  config.ssh.max_tries = 40
-  config.ssh.timeout = 120
-
-  config.vm.provision :shell, inline: <<-EOF
-    apt-get update -yq
-    apt-get install -yq git-all curl make
-    curl -s https://test.docker.io | sh
-  EOF
+  config.vm.provision :shell, path: '.vagrant-provision.sh'
 end
