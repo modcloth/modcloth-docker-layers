@@ -40,16 +40,16 @@ make container
 ## Pushing images
 
 Once the images are built, they should be uploaded to the ModCloth Docker
-Registry at `dr.prod.modcloth.com` using `docker push` (after `docker login`)
+Registry at `quay.io/modcloth` using `docker push` (after `docker login`)
 like so:
 
 ``` bash
 # Make sure you're logged into the ModCloth Docker Registry
-sudo docker login dr.prod.modcloth.com
+sudo docker login quay.io
 
 # Enter username, password, email # after which there will be
 # a ~/.dockercfg containing the auth JSON.
 
-# Push an image by "repository name" and "tag"
-sudo docker push dr.prod.modcloth.com/nodejs:0.1.0
+# Push an image by "repository name".  All tags for the image will also be pushed.
+sudo docker push quay.io/modcloth/nodejs
 ```

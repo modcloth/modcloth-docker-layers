@@ -1,7 +1,7 @@
 DOCKER ?= sudo docker
 REV := $(shell cat VERSION)
 PROJECT ?= some-project-name
-REGISTRY ?= dr.prod.modcloth.com
+REGISTRY ?= quay.io/modcloth
 COMMAND ?=
 
 all:
