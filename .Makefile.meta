@@ -2,7 +2,7 @@ DOCKER ?= sudo docker
 REV := $(shell cat VERSION)
 BUILD_FLAGS ?= -no-cache=true
 PROJECT ?= $(shell basename $(PWD))
-REGISTRY ?= dr.prod.modcloth.com
+REGISTRY ?= quay.io/modcloth
 COMMAND ?=
 
 all:

@@ -1,4 +1,4 @@
-FROM dr.prod.modcloth.com/ruby-dev:0.1.0
+FROM quay.io/modcloth/ruby-dev:latest
 MAINTAINER Dan Buch <d.buch@modcloth.com>
 
 RUN /usr/local/rvm/bin/rvm install 2.0.0-p247

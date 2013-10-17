@@ -1,6 +1,5 @@
-FROM dr.prod.modcloth.com/build-essential:0.1.0
+FROM quay.io/modcloth/build-essential:latest
 MAINTAINER Dan Buch <d.buch@modcloth.com>
 
-RUN apt-get install -yq python-software-properties python g++ make rlwrap
-RUN add-apt-repository ppa:chris-lea/node.js && apt-get update -yq
-RUN apt-get install -yq nodejs
+RUN curl -s http://nodejs.org/dist/v0.10.18/node-v0.10.18-linux-x64.tar.gz | tar xzf - --strip-components=1
+RUN echo 'export PATH=/node-v0.10.18-linux-x64/bin:$PATH' > /etc/profile.d/node-v0.10.18.sh
