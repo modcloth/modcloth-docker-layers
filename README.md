@@ -31,7 +31,7 @@ Each directory contains a `Makefile` (based on
 
 ``` bash
 # Move into a directory containing a Dockerfile
-cd /vagrant/build-essential/nodejs
+cd /vagrant/build-essential/nodejs-dev
 
 # Build the container
 make container
