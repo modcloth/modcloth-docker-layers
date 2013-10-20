@@ -51,5 +51,5 @@ sudo docker login quay.io
 # a ~/.dockercfg containing the auth JSON.
 
 # Push an image by "repository name".  All tags for the image will also be pushed.
-sudo docker push quay.io/modcloth/nodejs
+sudo docker push quay.io/modcloth/nodejs-dev
 ```
