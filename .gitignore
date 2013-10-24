@@ -1,1 +1,5 @@
 /.vagrant/
+.latest_container
+.latest_tagged
+.latest_pushed
+.container_output
