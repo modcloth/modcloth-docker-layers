@@ -1,0 +1,7 @@
+#!/bin/bash
+exec /usr/lib/postgresql/9.3/bin/initdb \
+  -D /db \
+  --locale=${PGLOCALE:-C} \
+  --encoding=${PGENCODING:-UTF-8} \
+  --auth=${PGAUTH:-trust} \
+  "$@"

@@ -1,0 +1,10 @@
+#!/bin/bash
+exec /usr/lib/postgresql/9.3/bin/postgres \
+  -D /db \
+  -B ${PGNBUFFERS:-512MB} \
+  -h ${PGHOST:-0.0.0.0} \
+  -i \
+  -N ${PGMAXCONNECT:-100} \
+  -p ${PGPORT:-5432} \
+  -S ${PGWORKMEM:-8MB} \
+  "$@"

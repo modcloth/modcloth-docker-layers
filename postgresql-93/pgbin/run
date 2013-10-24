@@ -1,0 +1,8 @@
+#!/bin/bash
+if [[ "$1" == "--auto" ]] ; then
+  shift
+  if [ ! -f /db/postgresql.conf ] ; then
+    /pgbin/init "$@"
+  fi
+fi
+exec su postgres -c /pgbin/run-as-postgres "$@"

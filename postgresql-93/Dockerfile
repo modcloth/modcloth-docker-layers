@@ -15,7 +15,8 @@ RUN /etc/init.d/postgresql stop ; \
     mkdir -p /db && \
     chown -R postgres:postgres /db ~postgres && \
     rm -f /var/run/postgresql/.s.PGSQL.5432.lock
+ADD ./pgbin /pgbin
 
 EXPOSE 5432
 VOLUME ["/db"]
-CMD ["su", "postgres", "-c", "'/usr/lib/postgresql/9.3/bin/postgres -D /db'"]
+CMD ["/pgbin/run", "--auto"]
