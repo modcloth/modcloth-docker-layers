@@ -8,11 +8,11 @@ RUN apt-get install -yq \
 RUN /etc/init.d/postgresql stop ; \
     rm -rf /var/lib/postgresql/9.3/main \
            /etc/postgresql/9.3/main && \
-    mkdir -p /db && \
-    chown -R postgres:postgres /db ~postgres && \
+    mkdir -p /pg/db /pg/custom && \
+    chown -R postgres:postgres /pg ~postgres && \
     rm -f /var/run/postgresql/.s.PGSQL.5432.lock
-ADD ./pgbin /pgbin
+ADD ./bin /pg/bin
 
 EXPOSE 5432
-VOLUME ["/db"]
-CMD ["/pgbin/run", "--auto"]
+VOLUME ["/pg/db", "/pg/custom"]
+CMD ["/pg/bin/run", "--auto"]

@@ -1,6 +1,6 @@
 #!/bin/bash
 exec /usr/lib/postgresql/9.3/bin/postgres \
-  -D /db \
+  -D /pg/db \
   -B ${PGNBUFFERS:-512MB} \
   -h ${PGHOST:-0.0.0.0} \
   -i \

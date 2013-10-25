@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e
+
+if [[ "$1" == "--auto" ]] ; then
+  shift
+
+  if [ ! -f /pg/db/postgresql.conf ] ; then
+    /pg/bin/init "$@"
+  fi
+
+  if [ -x /pg/custom/first-run ] && [ ! -e /pg/custom/first-run.done ] ; then
+    /pg/bin/run >> /pg/custom/first-run.log 2>&1 &
+    PGPID="$!"
+
+    while ! su - postgres -c psql >/dev/null 2>&1 ; do
+      sleep 1
+    done
+
+    su - postgres -c /pg/custom/first-run && touch /pg/custom/first-run.done
+
+    kill "$PGPID"
+    wait
+  fi
+fi
+exec su postgres -c /pg/bin/run-as-postgres "$@"

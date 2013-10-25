@@ -1,4 +1,0 @@
-#!/bin/bash
-set -e
-chown postgres:postgres /db
-exec su postgres -c /pgbin/init-as-postgres "$@"
