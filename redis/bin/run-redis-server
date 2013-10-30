@@ -1,0 +1,17 @@
+#!/bin/bash
+set -e
+
+ARGS="${REDIS_CONF:-/redis-etc/redis.conf}"
+ARGS="$ARGS --dir ${REDIS_DATA_DIR:-/redis-data} --port ${REDIS_PORT:-6379}"
+
+if [ -n "$REDIS_SLAVEOF" ] ; then
+  ARGS="$ARGS --slaveof $REDIS_SLAVEOF"
+fi
+
+if [ -n "$REDIS_LOGLEVEL"  ] ; then
+  ARGS="$ARGS --loglevel $REDIS_LOGLEVEL"
+fi
+
+set -x
+cd ${REDIS_DATA_DIR:-/redis-data}
+exec redis-server $ARGS

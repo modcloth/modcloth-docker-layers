@@ -11,7 +11,7 @@ all:
 	@echo "  * latest    - tag the latest container for $(PROJECT) as 'latest'"
 	@echo "  * push      - push $(REGISTRY)/$(PROJECT)"
 
-container: .latest_container
+container: .latest_container Dockerfile
 
 latest: .latest_tagged
 
