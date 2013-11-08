@@ -11,6 +11,6 @@ RUN /etc/init.d/mysql stop ; \
     mkdir -p /mysql/db /mysql/custom && \
     chown -R mysql:mysql /mysql ~mysql
 
-EXPOSE 5432
+EXPOSE 3306
 VOLUME ["/mysql/db", "/mysql/custom"]
 CMD ["/mysql/bin/run", "--auto"]
