@@ -1,4 +1,4 @@
-FROM quay.io/modcloth/percona:latest
+FROM quay.io/modcloth/percona-apt-repo:latest
 MAINTAINER Platform <platform@modcloth.com>
 
 RUN apt-get install -yq \
