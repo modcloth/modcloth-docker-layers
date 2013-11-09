@@ -10,6 +10,7 @@ RUN /etc/init.d/mysql stop ; \
     rm -rf /etc/mysql /var/lib/mysql && \
     mkdir -p /mysql/db /mysql/custom && \
     chown -R mysql:mysql /mysql ~mysql
+ADD ./bin /mysql/bin
 
 EXPOSE 3306
 VOLUME ["/mysql/db", "/mysql/custom"]

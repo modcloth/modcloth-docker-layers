@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+set -e
+
+function main() {
+  _initialize_db
+  _exec_mysql "$@"
+  _run_custom_hook_if_present
+  wait $mysql_pid
+}
+
+function _initialize_db(){
+  if [[ ! -e /mysql/custom/init.done ]] ; then
+    mysql_install_db --user mysql \
+      --basedir=/mysql \
+      --datadir=/mysql/db && \
+      touch /mysql/custom/init.done
+  fi
+}
+
+function _run_custom_hook_if_present() {
+  if [[ ! -e /mysql/custom/first-run.done ]] && [[ -x /mysql/custom/first-run ]] ; then
+    /mysql/custom/first-run >> /mysql/custom/first-run.log 2>&1 && \
+      touch /mysql/custom/first-run.done
+  fi
+}
+
+function _exec_mysql() {
+  /usr/sbin/mysqld --user=mysql "$@" &
+  export mysql_pid="$!"
+
+  # wait for mysql to start
+  while ! su - mysql -c mysql >/dev/null 2>&1 ; do
+    sleep 1
+  done
+}
+
+main "$@"
