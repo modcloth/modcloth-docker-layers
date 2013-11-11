@@ -9,5 +9,6 @@ apt-get update -yq
 apt-get install -yq git-all curl make
 
 if ! which docker ; then
-  curl -s https://test.docker.io | sh
+  curl -sL https://get.docker.io/ | sh
+  usermod -a -G docker vagrant
 fi
