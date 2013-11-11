@@ -14,7 +14,7 @@ apt-get install -yq git-all curl make
 apt-get install -yq --force-yes lxc-docker
 
 apt-get update -yq
-apt-get install -yq linux-image-generic-lts-raring
+apt-get install -yq linux-image-generic-lts-raring dkms
 
 usermod -a -G docker vagrant
 
@@ -27,11 +27,6 @@ Vagrant.configure('2') do |config|
   config.vm.box_url = 'http://cloud-images.ubuntu.com/vagrant/precise/current/precise-server-cloudimg-amd64-vagrant-disk1.box'
 
   config.vm.network :private_network, ip: '33.33.33.10', auto_correct: true
-
-  # forward docker ports
-  (49000..49900).each do |port|
-    config.vm.network :forwarded_port, host: port, guest: port
-  end
 
   config.vm.provision :shell, inline: provision_script
 end
