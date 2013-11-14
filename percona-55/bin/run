@@ -26,7 +26,11 @@ function _run_custom_hook_if_present() {
 }
 
 function _exec_mysql() {
-  /usr/sbin/mysqld --user=mysql "$@" &
+  /usr/sbin/mysqld \
+    --user=mysql \
+    --basedir=/mysql \
+    --datadir=/mysql/db \
+    "$@" &
   export mysql_pid="$!"
 
   # wait for mysql to start
