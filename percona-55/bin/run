@@ -26,6 +26,7 @@ function _run_custom_hook_if_present() {
 }
 
 function _exec_mysql() {
+  export MYSQL_UNIX_PORT=/mysql/db/mysql.sock
   /usr/sbin/mysqld \
     --user=mysql \
     --basedir=/usr \
