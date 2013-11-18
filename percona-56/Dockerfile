@@ -2,8 +2,8 @@ FROM quay.io/modcloth/percona-apt-repo:latest
 MAINTAINER Platform <platform@modcloth.com>
 
 RUN apt-get install -yq \
-    percona-server-server-5.5 \
-    percona-server-client-5.5 \
+    percona-server-server-5.6 \
+    percona-server-client-5.6 \
     percona-toolkit \
     percona-xtrabackup
 RUN /etc/init.d/mysql stop ; \
