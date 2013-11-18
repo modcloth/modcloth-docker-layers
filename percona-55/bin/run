@@ -6,7 +6,6 @@ function main() {
   _initialize_db
   _exec_mysql "$@"
   _run_custom_hook_if_present
-  wait $mysql_pid
 }
 
 function _initialize_db(){
@@ -35,7 +34,7 @@ function _exec_mysql() {
   export mysql_pid="$!"
 
   # wait for mysql to start
-  while ! su - mysql -c mysql >/dev/null 2>&1 ; do
+  while ! mysql >/dev/null 2>&1 ; do
     sleep 1
   done
 }

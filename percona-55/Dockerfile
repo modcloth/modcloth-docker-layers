@@ -16,4 +16,4 @@ ADD ./bin /mysql/bin
 
 EXPOSE 3306
 VOLUME ["/mysql/db", "/mysql/custom"]
-ENTRYPOINT ["/mysql/bin/run"]
+CMD ["/mysql/bin/run"]
