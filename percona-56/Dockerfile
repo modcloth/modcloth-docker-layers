@@ -13,6 +13,9 @@ RUN /etc/init.d/mysql stop ; \
     chown -R mysql:mysql /mysql ~mysql
 
 ADD ./bin /mysql/bin
+ADD ./etc/my.cnf.example /mysql/db/my.cnf
+
+RUN chown -R mysql:mysql /mysql/db && chmod 0640 /mysql/db/my.cnf
 
 EXPOSE 3306
 VOLUME ["/mysql/db", "/mysql/custom"]
