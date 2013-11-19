@@ -4,8 +4,8 @@ set -e
 
 function main() {
   _initialize_db
-  _exec_mysql "$@"
   _run_custom_hook_if_present
+  _exec_mysql "$@"
 }
 
 function _initialize_db(){
