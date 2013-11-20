@@ -4,7 +4,11 @@ set -e
 
 function main() {
   _initialize_db
+  _massage_config
+  _start_mysql_for_hooks
+  _run_default_hooks
   _run_custom_hook_if_present
+  _kill_background_mysql
   _exec_mysql "$@"
 }
 
@@ -17,8 +21,11 @@ function _initialize_db(){
   fi
 }
 
-function _run_custom_hook_if_present() {
-  if [[ ! -e /mysql/custom/first-run.done ]] && [[ -x /mysql/custom/first-run ]] ; then
+function _massage_config() {
+  sed -i -e "s/SERVER_ID_PLACEHOLDER/$(printf '%d' 0x$(hostid))/" /mydql/db/my.cnf
+}
+
+function _start_mysql_for_hooks() {
     export MYSQL_UNIX_PORT=/mysql/db/mysql.sock
     /usr/sbin/mysqld \
       --user=mysql \
@@ -31,12 +38,27 @@ function _run_custom_hook_if_present() {
     while ! mysql >/dev/null 2>&1 ; do
       sleep 1
     done
+}
+
+function _run_default_hooks() {
+  for script in 'default-first-run' 'start-replication' ; do
+    if [[ ! -e /mysql/custom/"$script".done ]] ; then
+      /mysql/bin/"$script" >> /mysql/custom/"$script".log 2>&1 && \
+        touch /mysql/custom/"$script".done
+    fi
+  done
+}
+
+function _run_custom_hook_if_present() {
+  if [[ ! -e /mysql/custom/first-run.done ]] && [[ -x /mysql/custom/first-run ]] ; then
 
     /mysql/custom/first-run >> /mysql/custom/first-run.log 2>&1 && \
       touch /mysql/custom/first-run.done
-
-    kill -15 "$mysql_pid"
   fi
+}
+
+function _kill_background_mysql() {
+    kill -15 "$mysql_pid"
 }
 
 function _exec_mysql() {
