@@ -15,7 +15,7 @@ ADD ./bin /mysql/bin
 ADD ./hooks /mysql/hooks
 ADD ./etc/my.cnf.example /mysql/config/
 
-RUN chown -R mysql:mysql /mysql 
+RUN chown -R mysql:mysql /mysql
 
 EXPOSE 3306
 VOLUME ["/mysql/db", "/mysql/logs"]

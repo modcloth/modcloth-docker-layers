@@ -13,7 +13,7 @@ function main() {
 }
 
 function _fix_permissions() {
-  chown -R mysql:mysql /mysql 
+  chown -R mysql:mysql /mysql
   chmod 640 /mysql/db/my.cnf
 }
 
@@ -27,7 +27,7 @@ function _initialize_db() {
 }
 
 function _massage_config() {
-  sed -e "s/SERVER_ID_PLACEHOLDER/$(printf '%d' 0x$(hostid))/" /mysql/config/my.cnf.example > /mysql/db/my.cnf 
+  sed -e "s/SERVER_ID_PLACEHOLDER/$(printf '%d' 0x$(hostid))/" /mysql/config/my.cnf.example > /mysql/db/my.cnf
 }
 
 function _start_mysql_for_hooks() {
