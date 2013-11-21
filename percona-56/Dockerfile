@@ -1,6 +1,10 @@
 FROM quay.io/modcloth/percona-apt-repo:latest
 MAINTAINER Platform <platform@modcloth.com>
 
+ENV SKIP_START_REPLICATION_FOR_MASTER 1
+ENV SKIP_DEFAULT_FIRST_RUN 1
+
+RUN apt-get update -yq
 RUN apt-get install -yq \
     percona-server-server-5.6 \
     percona-server-client-5.6 \
@@ -8,8 +12,9 @@ RUN apt-get install -yq \
     percona-xtrabackup
 RUN /etc/init.d/mysql stop ; \
     usermod -d /mysql mysql && \
-    rm -rf /etc/mysql /var/lib/mysql && \
-    mkdir -p /mysql/db /mysql/logs
+    rm -rf /etc/mysql /var/lib/mysql
+RUN for dir in db logs bin hooks config ; \
+  do mkdir -p "/mysql/$dir" ; done
 
 ADD ./bin /mysql/bin
 ADD ./hooks /mysql/hooks
