@@ -1,8 +1,9 @@
 FROM quay.io/modcloth/percona-apt-repo:latest
 MAINTAINER Platform <platform@modcloth.com>
 
-ENV SKIP_START_REPLICATION_FOR_MASTER 1
-ENV SKIP_DEFAULT_FIRST_RUN 1
+ENV SKIP_START_REPLICATION_FOR_MASTER "yes"
+ENV SKIP_START_REPLICATION_FOR_SLAVE "yes"
+ENV SKIP_DEFAULT_FIRST_RUN "yes"
 
 RUN apt-get update -yq
 RUN apt-get install -yq \
@@ -18,7 +19,6 @@ RUN for dir in db logs bin hooks config ; \
 
 ADD ./bin /mysql/bin
 ADD ./hooks /mysql/hooks
-ADD ./etc/my.cnf.example /mysql/config/
 
 RUN chown -R mysql:mysql /mysql
 

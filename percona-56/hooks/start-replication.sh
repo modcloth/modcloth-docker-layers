@@ -4,13 +4,13 @@ set -e
 
 export MYSQL_UNIX_PORT="/mysql/db/mysql.sock"
 
-if [[ -z "$SKIP_START_REPLICATION_FOR_MASTER" ]] ; then
+if [[ "$SKIP_START_REPLICATION_FOR_MASTER" == 'no' ]] ; then
   mysql -e "CREATE USER '$SR_REPLICATION_USER'@'%' IDENTIFIED BY '$SR_REPLICATION_PASSWORD'"
   mysql -e "GRANT REPLICATION SLAVE ON *.* to '$SR_REPLICATION_USER'@'%'"
   mysql -e "FLUSH PRIVILEGES;"
 fi
 
-if [[ -z "$SKIP_START_REPLICATION_FOR_SLAVE" ]] ; then
+if [[ "$SKIP_START_REPLICATION_FOR_SLAVE" == 'no' ]] ; then
   # do base backup
 
   mysql -e "CHANGE MASTER TO MASTER_HOST = '$SR_MASTER_IP',

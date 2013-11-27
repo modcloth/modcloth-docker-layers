@@ -4,7 +4,7 @@ set -e
 
 function main() {
   _initialize_db
-  _massage_config
+  _write_config
   _fix_permissions
   _start_mysql_for_hooks
   _run_hooks
@@ -26,8 +26,8 @@ function _initialize_db() {
   fi
 }
 
-function _massage_config() {
-  sed -e "s/SERVER_ID_PLACEHOLDER/$(printf '%d' 0x$(hostid))/" /mysql/config/my.cnf.example > /mysql/db/my.cnf
+function _write_config() {
+  ! ls /mysql/db/my.cnf 1>/dev/null 2>&1 || /mysql/bin/write-config
 }
 
 function _start_mysql_for_hooks() {

@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+
+cat <<EOB > /mysql/db/my.cnf
+port = ${PERCONA_PORT:-3306}
+socket = ${PERCONA_SOCKET:-/mysql/db/mysql.sock}
+
+user = ${PERCONA_USER:-mysql}
+port = ${PERCONA_PORT:-3306}
+socket = ${PERCONA_SOCKET:-/mysql/db/mysql.sock}
+bind-address = ${PERCONA_BIND_ADDRESS:-0.0.0.0}
+
+${PERCONA_SKIP_INTERNAL_LOCKING:-skip-external-locking}
+${PERCONA_LOG_WARNINGS:-log_warnings}
+${PERCONA_SKIP_NAME_RESOLV:-skip_name_resolv}
+
+basedir = ${PERCONA_BASEDIR:-/usr}
+datadir = ${PERCONA_DATADIR:-/mysql/db}
+
+server-id = $(printf '%d' 0x$(hostid))
+auto_increment_increment = ${PERCONA_AUTO_INCREMENT_INCREMENT:-2}
+auto_increment_offset = ${PERCONA_AUTO_INCREMENT_OFFSET:-1}
+
+character-set-server = ${PERCONA_CHARACTER_SET_SERVER:-utf8}
+collation-server = ${PERCONA_COLLATION_SERVER:-utf8_unicode_ci}
+
+# InnoDB settings
+innodb_data_home_dir = ${PERCONA_INNODB_DATA_HOME_DIR:-/mysql/db}
+innodb_log_group_home_dir = ${PERCONA_INNODB_LOG_GROUP_HOME_DIR:-/mysql/db}
+
+innodb_data_file_path = ${PERCONA_INNODB_DATA_FILE_PATH:-ibdata1:100M:autoextend}
+innodb_buffer_pool_size = ${PERCONA_INNODB_BUFFER_POOL_SIZE:-64M}
+innodb_buffer_pool_instances = ${PERCONA_INNODB_BUFFER_POOL_INSTANCES:-4}
+
+innodb_log_file_size = ${PERCONA_INNODB_LOG_FILE_SIZE:-400M}
+innodb_additional_mem_pool_size = ${PERCONA_INNODB_ADDITIONAL_MEM_POOL_SIZE:-20M}
+innodb_log_buffer_size = ${PERCONA_INNODB_LOG_BUFFER_SIZE:-8M}
+innodb_flush_log_at_trx_commit = ${PERCONA_INNODB_FLUSH_LOG_AT_TRX_COMMIT:-1}
+innodb_lock_wait_timeout = ${PERCONA_INNODB_LOCK_WAIT_TIMEOUT:-20}
+${PERCONA_INNODB_FILE_PER_TABLE:-innodb_file_per_table}
+innodb_doublewrite = ${PERCONA_INNODB_DOUBLEWRITE:-0}
+innodb_io_capacity = ${PERCONA_INNODB_IO_CAPACITY:-20000}
+innodb_read_io_threads = ${PERCONA_INNODB_READ_IO_THREADS:-48}
+innodb_write_io_threads = ${PERCONA_INNODB_WRITE_IO_THREADS:-48}
+
+# All other settings
+table_cache = ${PERCONA_TABLE_CACHE:-256}
+table_open_cache = ${PERCONA_TABLE_OPEN_CACHE:-1024}
+table_definition_cache = ${PERCONA_TABLE_DEFINITION_CACHE:-1024}
+thread_cache_size = ${PERCONA_THREAD_CACHE_SIZE:-250}
+
+query_cache_type = ${PERCONA_QUERY_CACHE_TYPE:-OFF}
+query_cache_size = ${PERCONA_QUERY_CACHE_SIZE:-0}
+query_cache_limit = ${PERCONA_QUERY_CACHE_LIMIT:-4096}
+query_cache_min_res_unit = ${PERCONA_QUERY_CACHE_MIN_RES_UNIT:-512}
+
+tmpdir = ${PERCONA_TMPDIR:-/tmp}
+tmp_table_size = ${PERCONA_TMP_TABLE_SIZE:-2048M}
+max_heap_table_size = ${PERCONA_MAX_HEAP_TABLE_SIZE:-2048M}
+max_connections = ${PERCONA_MAX_CONNECTIONS:-1000}
+max_allowed_packet = ${PERCONA_MAX_ALLOWED_PACKET:-32M}
+slave_max_allowed_packet = ${PERCONA_SLAVE_MAX_ALLOWED_PACKET:-32M}
+connect_timeout = ${PERCONA_CONNECT_TIMEOUT:-10}
+net_read_timeout = ${PERCONA_NET_READ_TIMEOUT:-10}
+net_write_timeout = ${PERCONA_NET_WRITE_TIMEOUT:-10}
+net_buffer_length = ${PERCONA_NET_BUFFER_LENGTH:-16384}
+read_buffer_size = ${PERCONA_READ_BUFFER_SIZE:-16M}
+thread_stack = ${PERCONA_THREAD_STACK:-384K}
+transaction-isolation = ${PERCONA_TRANSACTION_ISOLATION:-READ-UNCOMMITTED}
+event_scheduler = ${PERCONA_EVENT_SCHEDULER:-OFF}
+group_concat_max_len = ${PERCONA_GROUP_CONCAT_MAX_LEN:-1024}
+slave_type_conversions = ${PERCONA_SLAVE_TYPE_CONVERSIONS:-}
+
+# Slow query log settings
+slow_query_log = ${PERCONA_SLOW_QUERY_LOG:-OFF}
+slow_query_log_file = ${PERCONA_SLOW_QUERY_LOG_FILE:-/mysql/log/slowquery.log}
+slow_query_log_timestamp_always = ${PERCONA_SLOW_QUERY_LOG_TIMESTAMP_ALWAYS:-ON}
+slow_query_log_timestamp_precision = ${PERCONA_SLOW_QUERY_LOG_TIMESTAMP_PRECISION:-microsecond}
+slow_query_log_use_global_control = ${PERCONA_SLOW_QUERY_LOG_USE_GLOBAL_CONTROL:-all}
+long_query_time = ${PERCONA_LONG_QUERY_TIME:-0}
+log_slow_filter = ${PERCONA_LOG_SLOW_FILTER:-}
+log_slow_verbosity = ${PERCONA_LOG_SLOW_VERBOSITY:-microtime,query_plan,innodb}
+log-queries-not-using-indexes = ${PERCONA_LOG_QUERIES_NOT_USING_INDEXES:-OFF}
+
+# Replication settings (master to slave)
+max_binlog_size = ${PERCONA_MAX_BINLOG_SIZE:-1000M}
+max-relay-log-size = ${PERCONA_MAX_RELAY_LOG_SIZE:-1000M}
+${PERCONA_LOG_SLAVE_UPDATES:-log-slave-updates}
+log-bin = ${PERCONA_LOG_BIN:-/mysql/log/bin.log}
+log-error = ${PERCONA_LOG_ERROR:-/mysql/log/error.log}
+relay-log = ${PERCONA_RELAY_LOG:-/mysql/log/relay.log}
+expire_logs_days = ${PERCONA_EXPIRE_LOGS_DAYS:-3}
+binlog_format = ${PERCONA_BINLOG_FORMAT:-"ROW"}
+
+max_allowed_packet = ${PERCONA_MAX_ALLOWED_PACKET:-32M}
+
+${PERCONA_NO_AUTO_REFRESH:-no-auto-rehash}
+EOB

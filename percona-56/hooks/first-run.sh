@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ -z "$SKIP_DEFAULT_FIRST_RUN" ]] ; then
+if [[ "$SKIP_DEFAULT_FIRST_RUN" == 'no' ]] ; then
   set -e
 
   export MYSQL_UNIX_PORT="/mysql/db/mysql.sock"
