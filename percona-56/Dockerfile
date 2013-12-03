@@ -14,8 +14,9 @@ RUN apt-get install -yq \
 RUN /etc/init.d/mysql stop ; \
     usermod -d /mysql mysql && \
     rm -rf /etc/mysql /var/lib/mysql
-RUN for dir in db logs bin hooks config ; \
-  do mkdir -p "/mysql/$dir" ; done
+RUN for dir in db logs bin hooks config ; do \
+  mkdir -p "/mysql/$dir" ; \
+  done
 
 ADD ./bin /mysql/bin
 ADD ./hooks /mysql/hooks
