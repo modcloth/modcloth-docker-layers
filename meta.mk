@@ -4,6 +4,12 @@ BUILD_FLAGS ?= -no-cache=true -rm=true
 PROJECT ?= $(shell basename $(PWD))
 REGISTRY ?= quay.io/modcloth
 
+export DOCKER
+export REV
+export BUILD_FLAGS
+export PROJECT
+export REGISTRY
+
 all:
 	@echo "Available targets:"
 	@echo "  * clean     - remove all local images (and tags) for $(PROJECT)"

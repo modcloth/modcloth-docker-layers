@@ -3,3 +3,5 @@
 .latest_tagged
 .latest_pushed
 .container_output
+
+/nodejs-dev/Dockerfile
