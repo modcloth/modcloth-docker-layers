@@ -1,8 +1,14 @@
 DOCKER ?= sudo docker
-REV ?= $(git describe --always)
+REV ?= $(shell git describe --always)
 BUILD_FLAGS ?= -no-cache=true -rm=true
 PROJECT ?= $(shell basename $(PWD))
 REGISTRY ?= quay.io/modcloth
+
+export DOCKER
+export REV
+export BUILD_FLAGS
+export PROJECT
+export REGISTRY
 
 all:
 	@echo "Available targets:"
