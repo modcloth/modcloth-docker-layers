@@ -46,7 +46,7 @@ clean:
 build_and_tag: .latest_contaner .latest_tagged
 
 .pull:
-	$(DOCKER) pull $(REGISTRY)/$(PROJECT)
+	$(DOCKER) pull $(REGISTRY)/$(PROJECT) || true
 
 .latest_pushed: .pull .latest_tagged
 	$(DOCKER) push $(REGISTRY)/$(PROJECT)
