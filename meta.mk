@@ -23,9 +23,12 @@ container: .latest_container Dockerfile
 
 latest: build_and_tag
 
-tag: .latest_tagged
+tag: delete_current_tag .latest_tagged
 
 push: .latest_pushed
+
+delete_current_tag:
+	rm -f .latest_tagged
 
 clean:
 	rm -f .latest_container .latest_tagged .latest_pushed .container_output
@@ -38,11 +41,11 @@ clean:
 	awk '/^Successfully built/ { print $$NF }' .container_output | tail -1 > $@
 
 .latest_tagged:
-	( test -z "$(LATEST)" && echo 'Nothing to tag!' ) || $(DOCKER) tag $(REGISTRY)/$(PROJECT):latest && touch $@
+	( test -z "$(LATEST)" && echo 'Nothing to tag!' ) || $(DOCKER) tag $(LATEST) $(REGISTRY)/$(PROJECT):latest && touch $@
 
 build_and_tag: .latest_contaner .latest_tagged
 
 .latest_pushed: .latest_tagged
 	$(DOCKER) push $(REGISTRY)/$(PROJECT)
 
-.PHONY: container latest push clean build_and_tag tag
+.PHONY: container latest push clean build_and_tag tag delete_current_tag
