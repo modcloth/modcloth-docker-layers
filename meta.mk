@@ -3,12 +3,14 @@ REV ?= $(shell git describe --always)
 BUILD_FLAGS ?= -no-cache=true -rm=true
 PROJECT ?= $(shell basename $(PWD))
 REGISTRY ?= quay.io/modcloth
+LATEST ?= $(shell $(DOCKER) images | grep $(REGISTRY)/$(PROJECT) | head -n 1 | awk '{print $$3}' )
 
 export DOCKER
 export REV
 export BUILD_FLAGS
 export PROJECT
 export REGISTRY
+export LATEST
 
 all:
 	@echo "Available targets:"
@@ -19,26 +21,28 @@ all:
 
 container: .latest_container Dockerfile
 
-latest: .latest_tagged
+latest: build_and_tag
+
+tag: .latest_tagged
 
 push: .latest_pushed
 
 clean:
-	rm -f .latest_container .latest_tagged .latest_pushed
+	rm -f .latest_container .latest_tagged .latest_pushed .container_output
 	$(DOCKER) images | grep $(REGISTRY)/$(PROJECT) | awk '{ print $$3 }' | \
-	  sort | uniq | xargs $(DOCKER) rmi
-
+	  sort | uniq | xargs -I {} [[ -z "{}" ]] || $(DOCKER) rmi {}
 
 .latest_container:
 	rm -f $@
 	$(DOCKER) build -t $(REGISTRY)/$(PROJECT):$(REV) $(BUILD_FLAGS) . | tee .container_output
 	awk '/^Successfully built/ { print $$NF }' .container_output | tail -1 > $@
 
-.latest_tagged: .latest_container
-	$(DOCKER) tag $(shell cat .latest_container) $(REGISTRY)/$(PROJECT) latest && touch $@
+.latest_tagged:
+	( test -z "$(LATEST)" && echo 'Nothing to tag!' ) || $(DOCKER) tag $(REGISTRY)/$(PROJECT):latest && touch $@
+
+build_and_tag: .latest_contaner .latest_tagged
 
 .latest_pushed: .latest_tagged
 	$(DOCKER) push $(REGISTRY)/$(PROJECT)
 
-
-.PHONY: container latest push clean
+.PHONY: container latest push clean build_and_tag tag
