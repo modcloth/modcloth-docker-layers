@@ -47,7 +47,7 @@ function _start_mysql_for_hooks() {
 
 function _run_hooks() {
   for script in $( ls -1A /mysql/hooks/*.sh ) ; do
-      script = `basename $script`
+      script = "$(basename "$script")"
       if [[ ! -e /mysql/hooks/"$script".done ]] ; then
       /mysql/hooks/"$script" >> /mysql/logs/"$script".log 2>&1 && \
         touch /mysql/hooks/"$script".done
