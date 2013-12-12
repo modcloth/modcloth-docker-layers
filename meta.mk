@@ -33,9 +33,9 @@ delete_current_tag:
 clean:
 	rm -f .latest_container .latest_tagged .latest_pushed .container_output
 	$(DOCKER) images | grep $(REGISTRY)/$(PROJECT) | awk '{ print $$3 }' | \
-	  sort | uniq | xargs -I {} [[ -z "{}" ]] || $(DOCKER) rmi {}
+	  sort | uniq | xargs -I {} test -z "{}" || $(DOCKER) rmi {}
 
-.latest_container:
+.latest_container: .pull
 	rm -f $@
 	$(DOCKER) build -t $(REGISTRY)/$(PROJECT):$(REV) $(BUILD_FLAGS) . | tee .container_output
 	awk '/^Successfully built/ { print $$NF }' .container_output | tail -1 > $@
@@ -43,7 +43,7 @@ clean:
 .latest_tagged:
 	( test -z "$(LATEST)" && echo 'Nothing to tag!' ) || $(DOCKER) tag $(LATEST) $(REGISTRY)/$(PROJECT):latest && touch $@
 
-build_and_tag: .latest_contaner .latest_tagged
+build_and_tag: .latest_container .latest_tagged
 
 .pull:
 	$(DOCKER) pull $(REGISTRY)/$(PROJECT) || true
