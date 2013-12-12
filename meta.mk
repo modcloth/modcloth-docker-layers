@@ -45,7 +45,10 @@ clean:
 
 build_and_tag: .latest_contaner .latest_tagged
 
-.latest_pushed: .latest_tagged
+.pull:
+	$(DOCKER) pull $(REGISTRY)/$(PROJECT)
+
+.latest_pushed: .pull .latest_tagged
 	$(DOCKER) push $(REGISTRY)/$(PROJECT)
 
-.PHONY: container latest push clean build_and_tag tag delete_current_tag
+.PHONY: container latest push clean build_and_tag tag delete_current_tag .pull
