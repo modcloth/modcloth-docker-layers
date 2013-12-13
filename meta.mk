@@ -16,8 +16,10 @@ all:
 	@echo "Available targets:"
 	@echo "  * clean     - remove all local images (and tags) for $(PROJECT)"
 	@echo "  * container - build a Docker container for $(PROJECT)"
-	@echo "  * latest    - tag the latest container for $(PROJECT) as 'latest'"
+	@echo "  * latest    - builds and tags the latest container for $(PROJECT) as 'latest'"
+	@echo "  * pull      - pull down previous docker builds of $(REGISTRY)/$(PROJECT)"
 	@echo "  * push      - push $(REGISTRY)/$(PROJECT)"
+	@echo "  * tag       - tags the lastest image as 'latest'"
 
 container: .latest_container Dockerfile
 
@@ -36,7 +38,7 @@ clean:
 		test -z "$$IMAGES" || echo $$IMAGES | awk '{ print $$3 }' | \
 		sort | uniq | xargs $(DOCKER) rmi
 
-.latest_container: .pull
+.latest_container: pull
 	rm -f $@
 	$(DOCKER) build -t $(REGISTRY)/$(PROJECT):$(REV) $(BUILD_FLAGS) . | tee .container_output
 	awk '/^Successfully built/ { print $$NF }' .container_output | tail -1 > $@
@@ -46,10 +48,10 @@ clean:
 
 build_and_tag: .latest_container .latest_tagged
 
-.pull:
+pull:
 	$(DOCKER) pull $(REGISTRY)/$(PROJECT) || true
 
-.latest_pushed: .pull .latest_tagged
+.latest_pushed: pull .latest_tagged
 	$(DOCKER) push $(REGISTRY)/$(PROJECT)
 
-.PHONY: container latest push clean build_and_tag tag delete_current_tag .pull
+.PHONY: container latest push clean build_and_tag tag delete_current_tag pull
