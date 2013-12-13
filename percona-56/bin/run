@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+set -x
 set -e
 
 main() {
@@ -20,11 +21,15 @@ initialize_db() {
 }
 
 set_env() {
-  [[ -s /mysql/bin/env ]] && source /mysql/hooks/env
+  if [[ -s /mysql/bin/env ]] ; then
+    source /mysql/hooks/env
+  fi
 }
 
 write_config() {
-  ! ls /mysql/db/my.cnf 1>/dev/null 2>&1 || /mysql/bin/write-config
+  if [[ ! -s /mysql/db/my.cnf ]] ; then
+    /mysql/bin/write-config
+  fi
 }
 
 fix_permissions() {
