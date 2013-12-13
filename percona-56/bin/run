@@ -2,22 +2,15 @@
 
 set -e
 
-function main() {
-  _initialize_db
-  _write_config
-  _fix_permissions
-  _start_mysql_for_hooks
-  _run_hooks
-  _kill_background_mysql
-  _exec_mysql "$@"
+main() {
+  initialize_db
+  set_env
+  write_config
+  fix_permissions
+  exec_mysql "$@"
 }
 
-function _fix_permissions() {
-  chown -R mysql:mysql /mysql
-  chmod 640 /mysql/db/my.cnf
-}
-
-function _initialize_db() {
+initialize_db() {
   if [[ ! -e /mysql/hooks/init.done ]] ; then
     mysql_install_db --user=mysql \
       --basedir=/usr \
@@ -26,46 +19,29 @@ function _initialize_db() {
   fi
 }
 
-function _write_config() {
+set_env() {
+  [[ -s /mysql/bin/env ]] && source /mysql/hooks/env
+}
+
+write_config() {
   ! ls /mysql/db/my.cnf 1>/dev/null 2>&1 || /mysql/bin/write-config
 }
 
-function _start_mysql_for_hooks() {
-    export MYSQL_UNIX_PORT=/mysql/db/mysql.sock
-    /usr/sbin/mysqld \
-      --user=mysql \
-      --basedir=/usr \
-      --datadir=/mysql/db \
-      &
-    export mysql_pid="$!"
-
-    # wait for mysql to start
-    while ! mysql >/dev/null 2>&1 ; do
-      sleep 1
-    done
+fix_permissions() {
+  chown -R mysql:mysql /mysql
+  chmod 640 /mysql/db/my.cnf
 }
 
-function _run_hooks() {
-  for script in $( ls -1A /mysql/hooks/*.sh ) ; do
-      script = "$(basename "$script")"
-      if [[ ! -e /mysql/hooks/"$script".done ]] ; then
-      /mysql/hooks/"$script" >> /mysql/logs/"$script".log 2>&1 && \
-        touch /mysql/hooks/"$script".done
-    fi
-  done
-}
-
-function _kill_background_mysql() {
-    kill -15 "$mysql_pid"
-}
-
-function _exec_mysql() {
+exec_mysql() {
   export MYSQL_UNIX_PORT=/mysql/db/mysql.sock
-  exec /usr/sbin/mysqld \
+  /usr/sbin/mysqld \
     --user=mysql \
     --basedir=/usr \
     --datadir=/mysql/db \
-    "$@"
+    "$@" &
+  export mysql_pid="$!"
+  trap "kill -SIGQUIT $mysql_pid" INT
+  wait $mysql_pid
 }
 
 main "$@"
