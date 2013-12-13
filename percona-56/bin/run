@@ -12,17 +12,17 @@ main() {
 }
 
 initialize_db() {
-  if [[ ! -e /mysql/hooks/init.done ]] ; then
+  if [[ ! -e /mysql/config/init.done ]] ; then
     mysql_install_db --user=mysql \
       --basedir=/usr \
       --datadir=/mysql/db && \
-      touch /mysql/hooks/init.done
+      touch /mysql/config/init.done
   fi
 }
 
 set_env() {
-  if [[ -s /mysql/bin/env ]] ; then
-    source /mysql/hooks/env
+  if [[ -s /mysql/config/env ]] ; then
+    source /mysql/config/env
   fi
 }
 
@@ -45,7 +45,7 @@ exec_mysql() {
     --datadir=/mysql/db \
     "$@" &
   export mysql_pid="$!"
-  trap "kill -SIGQUIT $mysql_pid" INT
+  trap "kill -SIGQUIT $mysql_pid" TERM INT
   wait $mysql_pid
 }
 
