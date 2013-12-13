@@ -46,7 +46,7 @@ clean:
 .latest_tagged:
 	( test -z "$(LATEST)" && echo 'Nothing to tag!' ) || $(DOCKER) tag $(LATEST) $(REGISTRY)/$(PROJECT):latest && touch $@
 
-build_and_tag: .latest_container .latest_tagged
+build_and_tag: .latest_container tag
 
 pull:
 	$(DOCKER) pull $(REGISTRY)/$(PROJECT) || true
