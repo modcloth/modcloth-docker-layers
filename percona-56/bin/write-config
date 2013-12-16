@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
 cat <<EOB > /mysql/db/my.cnf
+[client]
 port = ${PERCONA_PORT:-3306}
 socket = ${PERCONA_SOCKET:-/mysql/db/mysql.sock}
 
+[mysqld]
 user = ${PERCONA_USER:-mysql}
 port = ${PERCONA_PORT:-3306}
 socket = ${PERCONA_SOCKET:-/mysql/db/mysql.sock}
