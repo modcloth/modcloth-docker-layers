@@ -4,9 +4,9 @@ set -x
 set -e
 
 main() {
-  initialize_db
   set_env
   write_config
+  initialize_db
   fix_permissions
   exec_mysql "$@"
 }
