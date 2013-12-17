@@ -45,8 +45,11 @@ innodb_read_io_threads = ${PERCONA_INNODB_READ_IO_THREADS:-48}
 innodb_write_io_threads = ${PERCONA_INNODB_WRITE_IO_THREADS:-48}
 
 # All other settings
-table_cache = ${PERCONA_TABLE_CACHE:-256}
-table_open_cache = ${PERCONA_TABLE_OPEN_CACHE:-1024}
+
+# these have been removed in 5.6
+#table_cache = ${PERCONA_TABLE_CACHE:-256}
+#table_open_cache = ${PERCONA_TABLE_OPEN_CACHE:-1024}
+
 table_definition_cache = ${PERCONA_TABLE_DEFINITION_CACHE:-1024}
 thread_cache_size = ${PERCONA_THREAD_CACHE_SIZE:-250}
 
@@ -74,7 +77,7 @@ slave_type_conversions = ${PERCONA_SLAVE_TYPE_CONVERSIONS:-}
 
 # Slow query log settings
 slow_query_log = ${PERCONA_SLOW_QUERY_LOG:-OFF}
-slow_query_log_file = ${PERCONA_SLOW_QUERY_LOG_FILE:-/mysql/log/slowquery.log}
+slow_query_log_file = ${PERCONA_SLOW_QUERY_LOG_FILE:-/mysql/logs/slowquery.log}
 slow_query_log_timestamp_always = ${PERCONA_SLOW_QUERY_LOG_TIMESTAMP_ALWAYS:-ON}
 slow_query_log_timestamp_precision = ${PERCONA_SLOW_QUERY_LOG_TIMESTAMP_PRECISION:-microsecond}
 slow_query_log_use_global_control = ${PERCONA_SLOW_QUERY_LOG_USE_GLOBAL_CONTROL:-all}
@@ -87,13 +90,15 @@ log-queries-not-using-indexes = ${PERCONA_LOG_QUERIES_NOT_USING_INDEXES:-OFF}
 max_binlog_size = ${PERCONA_MAX_BINLOG_SIZE:-1000M}
 max-relay-log-size = ${PERCONA_MAX_RELAY_LOG_SIZE:-1000M}
 ${PERCONA_LOG_SLAVE_UPDATES:-log-slave-updates}
-log-bin = ${PERCONA_LOG_BIN:-/mysql/log/bin.log}
-log-error = ${PERCONA_LOG_ERROR:-/mysql/log/error.log}
-relay-log = ${PERCONA_RELAY_LOG:-/mysql/log/relay.log}
+log-bin = ${PERCONA_LOG_BIN:-/mysql/db/bin.log}
+log-error = ${PERCONA_LOG_ERROR:-/mysql/logs/error.log}
+relay-log = ${PERCONA_RELAY_LOG:-/mysql/db/relay.log}
 expire_logs_days = ${PERCONA_EXPIRE_LOGS_DAYS:-3}
 binlog_format = ${PERCONA_BINLOG_FORMAT:-"ROW"}
 
 max_allowed_packet = ${PERCONA_MAX_ALLOWED_PACKET:-32M}
 
-${PERCONA_NO_AUTO_REFRESH:-no-auto-rehash}
+# not in 5.6?
+# ${PERCONA_NO_AUTO_REFRESH:-no-auto-rehash}
+#
 EOB
