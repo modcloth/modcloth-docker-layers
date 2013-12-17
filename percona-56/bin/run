@@ -27,7 +27,6 @@ set_env() {
 }
 
 write_config() {
-  echo "write config"
   if [[ ! -s /mysql/db/my.cnf ]] ; then
     /mysql/bin/write-config && ln -sf /mysql/db/my.cnf /etc/my.cnf
   fi
