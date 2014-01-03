@@ -1,7 +1,7 @@
 #!/bin/bash
 exec /usr/lib/postgresql/9.3/bin/postgres \
   -D /pg/db \
-  -B ${PGNBUFFERS:-512MB} \
+  -B ${PGNBUFFERS:-32MB} \
   -h ${PGHOST:-0.0.0.0} \
   -i \
   -N ${PGMAXCONNECT:-100} \
