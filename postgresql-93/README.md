@@ -15,7 +15,7 @@ The following environmental variables may be used to alter the behavior of
 - `PGLOCALE`: `--locale` option passed to `initdb` (default `C`)
 - `PGENCODING`: `--encoding` option passed to `initdb` (default `UTF-8`)
 - `PGAUTH`: `--auth` option passed to `initdb` (default `trust`)
-- `PGNBUFFERS`: `-B` option passed to `postgres` (default `512MB`)
+- `PGNBUFFERS`: `-B` option passed to `postgres` (default `32MB`)
 - `PGHOST`: `-h` option passed to `postgres` (default `0.0.0.0`)
 - `PGMAXCONNECT`: `-N` option passed to `postgres` (default `100`)
 - `PGPORT`: `-p` option passed to `postgres` (default `5432`)
