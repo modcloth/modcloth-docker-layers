@@ -34,9 +34,6 @@ delete_current_tag:
 
 clean:
 	rm -f .latest_container .latest_tagged .latest_pushed .container_output
-	export IMAGES="$(shell $(DOCKER) images | grep $(REGISTRY)/$(PROJECTS))" ; \
-		test -z "$$IMAGES" || echo $$IMAGES | awk '{ print $$3 }' | \
-		sort | uniq | xargs $(DOCKER) rmi
 
 .latest_container: pull
 	rm -f $@
